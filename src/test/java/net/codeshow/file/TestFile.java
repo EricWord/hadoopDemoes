@@ -45,4 +45,21 @@ public class TestFile {
 
 
     }
+
+    //文件删除
+    @Test
+    public void testDelete() throws Exception {
+        Configuration conf = new Configuration();
+        FileSystem fs = FileSystem.get(new URI("hdfs://Hadoop04:9000"), conf, "root");
+
+        boolean success = fs.delete(new Path("/0929"), true);
+        if (success) {
+            System.out.println("文件删除成功");
+        } else {
+            System.out.println("文件删除失败");
+        }
+
+        fs.close();
+
+    }
 }
