@@ -1,8 +1,7 @@
 package net.codeshow.file;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.*;
 import org.junit.Test;
 
 import java.net.URI;
@@ -80,7 +79,48 @@ public class TestFile {
         //关闭资源
 
         fs.close();
+    }
 
 
+    //文件详情查看
+    @Test
+    public void testListFiles() throws Exception {
+        Configuration conf = new Configuration();
+        FileSystem fs = FileSystem.get(new URI("hdfs://Hadoop04:9000"), conf, "root");
+
+
+        //查看文件详情
+        RemoteIterator<LocatedFileStatus> files = fs.listFiles(new Path("/"), true);
+        while (files.hasNext()) {
+            LocatedFileStatus fileStatus = files.next();
+
+
+            //文件名称
+            System.out.println("文件名称:" + fileStatus.getPath().getName());
+
+            //权限
+            System.out.println("文件的权限:" + fileStatus.getPermission());
+
+            //长度
+            System.out.println("长度:" + fileStatus.getLen());
+
+            //块信息
+            BlockLocation[] blockLocations = fileStatus.getBlockLocations();
+            System.out.println("块信息:");
+            for (BlockLocation blockLocation : blockLocations) {
+                String[] hosts = blockLocation.getHosts();
+                for (String host : hosts) {
+
+                    System.out.println("host=" + host);
+                }
+
+            }
+
+            System.out.println("----------一个文件结束---------");
+
+
+        }
+        //关闭资源
+        fs.close();
     }
 }
