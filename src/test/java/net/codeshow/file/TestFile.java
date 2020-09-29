@@ -123,4 +123,26 @@ public class TestFile {
         //关闭资源
         fs.close();
     }
+
+    //文件和文件夹的判断
+
+    @Test
+    public void testFileStatus() throws Exception {
+        Configuration conf = new Configuration();
+        FileSystem fs = FileSystem.get(new URI("hdfs://Hadoop04:9000"), conf, "root");
+
+        //判断操作
+        FileStatus[] fileStatuses = fs.listStatus(new Path("/"));
+        for (FileStatus fileStatus : fileStatuses) {
+            if (fileStatus.isFile()) {
+                System.out.println("文件->" + fileStatus.getPath().getName());
+
+            } else {
+                System.out.println("文件夹->" + fileStatus.getPath().getName());
+            }
+        }
+        fs.close();
+
+
+    }
 }
