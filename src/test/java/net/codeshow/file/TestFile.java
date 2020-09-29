@@ -6,7 +6,6 @@ import org.apache.hadoop.fs.Path;
 import org.junit.Test;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * @Description
@@ -60,6 +59,28 @@ public class TestFile {
         }
 
         fs.close();
+
+    }
+
+    //文件更改名字
+    @Test
+    public void testRename() throws Exception {
+        Configuration conf = new Configuration();
+        FileSystem fs = FileSystem.get(new URI("hdfs://Hadoop04:9000"), conf, "root");
+
+        //执行更名操作
+
+
+        boolean success = fs.rename(new Path("/my.txt"), new Path("/you.txt"));
+        if (success) {
+            System.out.println("文件更改名字成功");
+        } else {
+            System.out.println("文件更改名字失败");
+        }
+        //关闭资源
+
+        fs.close();
+
 
     }
 }
